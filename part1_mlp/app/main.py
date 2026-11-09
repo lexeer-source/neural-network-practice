@@ -12,6 +12,13 @@ from .utils import save_loss_plot
 def ask_number(prompt, converter):
     """Read one numeric value and convert invalid input to an application
     error.
+
+    Args:
+        prompt: Prompt displayed before reading a console value.
+        converter: Callable, such as int or float, that parses the response.
+
+    Returns:
+        Parsed numeric value returned by converter.
     """
     try:
         return converter(input(prompt))
@@ -24,6 +31,12 @@ class ConsoleApplication:
 
     def __init__(self):
         """Initialize an empty application without reading files or training.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; initializes the new instance.
         """
         self.network = None
         self.manager = DatasetManager()
@@ -31,6 +44,12 @@ class ConsoleApplication:
 
     def create_network(self):
         """Ask for layer sizes and activation, then initialize a fresh model.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
         """
         try:
             sizes = [int(item) for item in
@@ -43,6 +62,12 @@ class ConsoleApplication:
 
     def load_data(self):
         """Ask for CSV and test fraction; preserve an existing model's scaler.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
         """
         path = input("Путь к CSV: ").strip()
         fraction = ask_number("Доля тестовой выборки (например 0.2): ", float)
@@ -60,6 +85,12 @@ class ConsoleApplication:
 
     def train_network(self):
         """Ask for optimizer parameters; train and display held-out accuracy.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
         """
         self._require_network()
         if self.split_data is None:
@@ -79,7 +110,14 @@ class ConsoleApplication:
         print(f"Точность на test: {accuracy:.2%}")
 
     def predict(self):
-        """Read raw feature vectors manually or from a headered feature CSV."""
+        """Read raw feature vectors manually or from a headered feature CSV.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
+        """
         self._require_network()
         source = input("Ввод: 1 вручную, 2 из CSV: ").strip()
         if source == "1":
@@ -102,26 +140,53 @@ class ConsoleApplication:
 
     def save_model(self):
         """Save weights, scaler and training history at a user-supplied path.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
         """
         self._require_network()
         self.network.save(input("Путь к JSON-модели: ").strip())
         print("Модель сохранена.")
 
     def load_model(self):
-        """Load and validate a user-supplied JSON model."""
+        """Load and validate a user-supplied JSON model.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
+        """
         path = input("Путь к JSON-модели: ").strip()
         self.network = NeuralNetwork.load(path)
         print(f"Модель загружена: {self.network.sizes}.")
 
     def plot_history(self):
-        """Save a loss chart without requiring a graphical desktop."""
+        """Save a loss chart without requiring a graphical desktop.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
+        """
         self._require_network()
         default = Path(os.getenv("NN_OUTPUT_DIR", "data/output")) / "loss.png"
         path = input(f"Путь к графику [{default}]: ").strip() or default
         print(f"График: {save_loss_plot(self.network.history, path)}")
 
     def change_activation(self):
-        """Switch hidden activation and warn that retraining may be needed."""
+        """Switch hidden activation and warn that retraining may be needed.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; the hidden layer activations are updated.
+        """
         self._require_network()
         self.network.change_activation(input("Новая активация: ").strip())
         print("Активация изменена; для новых результатов обучите сеть заново.")
@@ -129,6 +194,12 @@ class ConsoleApplication:
     def run(self):
         """Run all menu actions; report input/file/dimension errors
         gracefully.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            Metrics dictionary for the demo; console run returns None on exit.
         """
         actions = {
             "1": self.create_network, "2": self.load_data,

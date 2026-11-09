@@ -6,7 +6,15 @@ from .exceptions import InvalidParameterError, ModelFileError
 
 
 def save_loss_plot(history, path):
-    """Save epoch/MSE chart to path; return the actual image path."""
+    """Save epoch/MSE chart to path; return the actual image path.
+
+    Args:
+        history: Sequence of per-epoch training MSE values.
+        path: Input or output filesystem path used by this operation.
+
+    Returns:
+        Path of the saved loss chart.
+    """
     if not history:
         raise InvalidParameterError("История обучения пока пуста.")
     try:

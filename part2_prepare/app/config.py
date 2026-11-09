@@ -22,7 +22,14 @@ class Settings:
 
     @classmethod
     def from_env(cls):
-        """Return settings from NN_* variables, rejecting invalid numbers."""
+        """Return settings from NN_* variables, rejecting invalid numbers.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            Validated Settings instance built from NN_* variables.
+        """
         try:
             settings = cls(
                 Path(os.getenv("NN_DATA_PATH", "data/input/images")),

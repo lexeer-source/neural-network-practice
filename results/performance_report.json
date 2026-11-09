@@ -1,0 +1,33 @@
+{
+  "python": "3.13.5",
+  "seed": 42,
+  "image_size": 64,
+  "variants_per_image": 3,
+  "reader_threads": 3,
+  "processes": 2,
+  "repeats": 3,
+  "file_count": 24,
+  "output_samples": 96,
+  "seconds": {
+    "sequential": [
+      0.07179988699863316,
+      0.03186789199935447,
+      0.024689767000381835
+    ],
+    "parallel": [
+      0.31124653599908925,
+      0.2831112410003698,
+      0.25216048500078614
+    ]
+  },
+  "median_sequential_seconds": 0.03186789199935447,
+  "median_parallel_seconds": 0.2831112410003698,
+  "speedup_sequential_over_parallel": 0.11256314615678877,
+  "outputs_identical": true,
+  "output_sha256": "1a5e29a8d09edac9f5874399318d107bd31207d711a5225b67196880f443e08a",
+  "threads_joined": true,
+  "remaining_child_processes": 0,
+  "timing_scope": "scan, read, normalize, augment, write, worker lifecycle",
+  "cache_control": "OS cache not reset; execution order alternates",
+  "interpretation": "sequential faster; process overhead"
+}

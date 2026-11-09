@@ -16,7 +16,14 @@ from .producer_consumer import run_parallel, run_sequential
 
 
 def file_digest(path):
-    """Return SHA256 by reading small chunks rather than the entire file."""
+    """Return SHA256 by reading small chunks rather than the entire file.
+
+    Args:
+        path: Input or output filesystem path used by this operation.
+
+    Returns:
+        Hexadecimal SHA256 digest of the file bytes.
+    """
     digest = hashlib.sha256()
     with Path(path).open("rb") as stream:
         for block in iter(lambda: stream.read(1024 * 1024), b""):
@@ -27,6 +34,20 @@ def file_digest(path):
 def benchmark(path, output, size=64, variants=3, readers=3, processes=2,
               repeats=3, seed=42, extensions="png"):
     """Return measured medians; verify identical arrays before writing report.
+
+    Args:
+        path: Input or output filesystem path used by this operation.
+        output: Destination path for an array or directory for run results.
+        size: Positive side length of the processed square images.
+        variants: Number of augmented copies added to each original image.
+        readers: Positive number of file-reading threads.
+        processes: Positive number of augmentation worker processes.
+        repeats: Positive number of sequential/parallel timing comparisons.
+        seed: Integer seed for reproducible data or transformation choices.
+        extensions: Supported extensions; strings use comma-separated names.
+
+    Returns:
+        Measured timings and equality checks also saved as JSON.
     """
     if min(size, variants, readers, processes, repeats) <= 0:
         raise PreparationError("Параметры сравнения должны быть > 0.")
@@ -86,7 +107,14 @@ def benchmark(path, output, size=64, variants=3, readers=3, processes=2,
 
 
 def main():
-    """Parse ENV/CLI configuration and return a useful nonzero error code."""
+    """Parse ENV/CLI configuration and return a useful nonzero error code.
+
+    Args:
+        No explicit arguments; uses instance state or console input.
+
+    Returns:
+        Integer exit code: zero for success, two for a reported failure.
+    """
     try:
         settings = Settings.from_env()
         parser = argparse.ArgumentParser(description=__doc__)

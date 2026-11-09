@@ -9,7 +9,17 @@ from PIL import Image
 
 
 def generate(destination, seed=42, images=24, size=64):
-    """Write seeded independent XOR samples and generated grayscale images."""
+    """Write seeded independent XOR samples and generated grayscale images.
+
+    Args:
+        destination: Directory in which synthetic input files are written.
+        seed: Integer seed for reproducible data or transformation choices.
+        images: Positive number of synthetic image files to generate.
+        size: Positive side length of the processed square images.
+
+    Returns:
+        None; seeded CSV and PNG files are written to destination.
+    """
     destination = Path(destination)
     destination.mkdir(parents=True, exist_ok=True)
     generator = np.random.default_rng(seed)

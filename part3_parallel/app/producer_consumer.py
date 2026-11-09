@@ -37,7 +37,19 @@ def _create_output(path, count, size, variants):
 
 
 def run_sequential(directory, extensions, output, size, variants, seed):
-    """Read, augment and write in one process; include all stages in timing."""
+    """Read, augment and write in one process; include all stages in timing.
+
+    Args:
+        directory: Root directory scanned recursively for input files.
+        extensions: Supported extensions; strings use comma-separated names.
+        output: Destination path for an array or directory for run results.
+        size: Positive side length of the processed square images.
+        variants: Number of augmented copies added to each original image.
+        seed: Integer seed for reproducible data or transformation choices.
+
+    Returns:
+        Dictionary containing elapsed seconds and item counts.
+    """
     started = time.perf_counter()
     paths = list(scan_files(directory, extensions))
     if not paths:
@@ -64,6 +76,20 @@ def run_sequential(directory, extensions, output, size, variants, seed):
 def run_parallel(directory, extensions, output, size=64, variants=3,
                  seed=42, readers=3, processes=2, queue_size=8):
     """Run bounded thread/Pool pipeline; join all workers on success or error.
+
+    Args:
+        directory: Root directory scanned recursively for input files.
+        extensions: Supported extensions; strings use comma-separated names.
+        output: Destination path for an array or directory for run results.
+        size: Positive side length of the processed square images.
+        variants: Number of augmented copies added to each original image.
+        seed: Integer seed for reproducible data or transformation choices.
+        readers: Positive number of file-reading threads.
+        processes: Positive number of augmentation worker processes.
+        queue_size: Positive bound for queued or pending work items.
+
+    Returns:
+        Timing, counts and status after all workers have stopped.
     """
     if min(size, variants, readers, processes, queue_size) <= 0:
         raise PreparationError("Параметры конвейера должны быть > 0.")
@@ -79,7 +105,14 @@ def run_parallel(directory, extensions, output, size=64, variants=3,
     workers = []
 
     def producer():
-        """Scan once and deliver ordered paths followed by stop signals."""
+        """Scan once and deliver ordered paths followed by stop signals.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
+        """
         try:
             paths = list(scan_files(directory, extensions))
             _put_cancellable(ready_queue, ("header", len(paths), None),
@@ -98,6 +131,12 @@ def run_parallel(directory, extensions, output, size=64, variants=3,
     def consumer():
         """Read one image at a time and report failures without abandoning
         queues.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; updates or displays application state.
         """
         try:
             while not cancelled.is_set():
@@ -126,6 +165,12 @@ def run_parallel(directory, extensions, output, size=64, variants=3,
     def completed(result):
         """Place a completed process result at its deterministic output
         offset.
+
+        Args:
+            result: Completed worker result: source index and image batch.
+
+        Returns:
+            None; updates or displays application state.
         """
         try:
             index, images = result
@@ -140,7 +185,14 @@ def run_parallel(directory, extensions, output, size=64, variants=3,
             pending_slots.release()
 
     def failed(error):
-        """Record an asynchronous worker failure and free its pending slot."""
+        """Record an asynchronous worker failure and free its pending slot.
+
+        Args:
+            error: Exception reported by an asynchronous augmentation worker.
+
+        Returns:
+            None; updates or displays application state.
+        """
         with lock:
             errors.append(str(error))
         pending_slots.release()

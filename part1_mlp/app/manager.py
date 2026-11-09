@@ -12,6 +12,12 @@ from .exceptions import DataFileError, InvalidParameterError
 
 def read_numeric_csv(path):
     """Return (headers, numeric matrix); reject missing/nonfinite/ragged rows.
+
+    Args:
+        path: Input or output filesystem path used by this operation.
+
+    Returns:
+        Pair of header names and a finite numeric matrix.
     """
     try:
         with Path(path).open(encoding="utf-8-sig", newline="") as stream:
@@ -37,7 +43,14 @@ class DatasetManager:
     """
 
     def __init__(self):
-        """Create an unloaded manager; split() fits the training scaler."""
+        """Create an unloaded manager; split() fits the training scaler.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            None; initializes the new instance.
+        """
         self.features = None
         self.targets = None
         self.center = None
@@ -47,6 +60,12 @@ class DatasetManager:
     def load_csv(self, path):
         """Load a headered CSV with >=1 features and a final 0/1 target
         column.
+
+        Args:
+            path: Input or output filesystem path used by this operation.
+
+        Returns:
+            This DatasetManager after features and targets are loaded.
         """
         names, matrix = read_numeric_csv(path)
         if matrix.shape[1] < 2 or len(matrix) < 2:
@@ -62,6 +81,14 @@ class DatasetManager:
     def split(self, test_fraction=0.2, seed=42):
         """Return scaled train/test arrays; fit center/scale on train rows
         only.
+
+        Args:
+            test_fraction: Fraction strictly between zero and one for test
+            rows.
+            seed: Integer seed for reproducible data or transformation choices.
+
+        Returns:
+            Scaled train/test features followed by train/test targets.
         """
         if self.features is None:
             raise DataFileError("Данные еще не загружены.")
@@ -82,7 +109,14 @@ class DatasetManager:
                 self.targets[self.test_indices])
 
     def transform(self, features):
-        """Apply the fitted train scaler without modifying its parameters."""
+        """Apply the fitted train scaler without modifying its parameters.
+
+        Args:
+            features: Numeric feature matrix; columns must match the model.
+
+        Returns:
+            Standardized feature matrix using the fitted train scaler.
+        """
         features = np.asarray(features, dtype=float)
         if (self.center is None or features.ndim != 2
                 or features.shape[1] != len(self.center)
@@ -91,7 +125,14 @@ class DatasetManager:
         return (features - self.center) / self.scale
 
     def state(self):
-        """Return serializable training normalization parameters and names."""
+        """Return serializable training normalization parameters and names.
+
+        Args:
+            No explicit arguments; uses instance state or console input.
+
+        Returns:
+            Dictionary containing center, scale and feature names.
+        """
         if self.center is None:
             raise DataFileError("Сначала разделите данные на train/test.")
         return {"center": self.center.tolist(), "scale": self.scale.tolist(),

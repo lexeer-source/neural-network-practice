@@ -1,0 +1,21 @@
+{
+  "dataset": "seeded synthetic noisy XOR",
+  "rows": 240,
+  "train_rows": 192,
+  "test_rows": 48,
+  "architecture": [
+    2,
+    8,
+    1
+  ],
+  "hidden_activation": "sigmoid",
+  "epochs": 1200,
+  "learning_rate": 1.0,
+  "batch_size": 16,
+  "initial_training_mse": 0.25403183689095504,
+  "final_training_mse": 7.447246136513533e-05,
+  "test_mse": 7.019273847221775e-05,
+  "test_accuracy": 1.0,
+  "saved_predictions_identical": true,
+  "train_test_indices_disjoint": true
+}

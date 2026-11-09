@@ -14,7 +14,14 @@ from .logging_config import configure_logging
 
 
 def doctor():
-    """Return Python/dependency/CUDA/cwd diagnostics; GPU is optional."""
+    """Return Python/dependency/CUDA/cwd diagnostics; GPU is optional.
+
+    Args:
+        No explicit arguments; uses instance state or console input.
+
+    Returns:
+        JSON-ready Python, dependency, CUDA and directory diagnostics.
+    """
     packages = {}
     for name in ["numpy", "PIL", "matplotlib"]:
         try:
@@ -41,6 +48,12 @@ def doctor():
 
 def main():
     """Parse CLI overrides, run the command and return zero or a clear error.
+
+    Args:
+        No explicit arguments; uses instance state or console input.
+
+    Returns:
+        Integer exit code: zero for success, two for a reported failure.
     """
     try:
         settings = Settings.from_env()

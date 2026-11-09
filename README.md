@@ -18,3 +18,7 @@ Python 3.10+; зависимости: `python -m pip install -r requirements.txt
 персональных сведений. Выходные файлы и журналы исключены из Git.
 
 Проверки: `python -m unittest discover -s tests -v`.
+
+Контрольный запуск сохранен в `results/`: метрики MLP и
+`performance_report.json`. Время зависит от окружения; новые запуски
+создают результаты в `data/output`.

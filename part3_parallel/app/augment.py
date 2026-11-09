@@ -5,6 +5,15 @@ import numpy as np
 
 def augment_image(index, image, variants, seed):
     """Return (index, original + seeded rotations/reflections/noise variants).
+
+    Args:
+        index: Stable source image index, also used to seed its variants.
+        image: Normalized two-dimensional grayscale NumPy array.
+        variants: Number of augmented copies added to each original image.
+        seed: Integer seed for reproducible data or transformation choices.
+
+    Returns:
+        Pair of source index and original plus augmented arrays.
     """
     result = np.empty((variants + 1, *image.shape), dtype=np.float32)
     result[0] = image

@@ -20,7 +20,14 @@ LOGGER = logging.getLogger(__name__)
 
 
 def normalize_extensions(value):
-    """Parse comma-separated extensions and reject unsupported formats."""
+    """Parse comma-separated extensions and reject unsupported formats.
+
+    Args:
+        value: Comma-separated filename extensions, with optional dots.
+
+    Returns:
+        Set of lowercase extensions beginning with dots.
+    """
     extensions = {"." + part.strip().lower().lstrip(".")
                   for part in value.split(",") if part.strip()}
     if not extensions or not extensions <= SUPPORTED_EXTENSIONS:
@@ -32,6 +39,13 @@ def normalize_extensions(value):
 
 def scan_files(directory, extensions):
     """Yield matching regular files recursively, with deterministic ordering.
+
+    Args:
+        directory: Root directory scanned recursively for input files.
+        extensions: Supported extensions; strings use comma-separated names.
+
+    Returns:
+        Iterator yielding matching paths in deterministic order.
     """
     directory = Path(directory)
     if not directory.is_dir():
@@ -46,7 +60,15 @@ def scan_files(directory, extensions):
 
 
 def load_image(path, image_size):
-    """Return a grayscale float32 square normalized to [0, 1]."""
+    """Return a grayscale float32 square normalized to [0, 1].
+
+    Args:
+        path: Input or output filesystem path used by this operation.
+        image_size: Positive side length for square grayscale images.
+
+    Returns:
+        Float32 square array with pixel values in [0, 1].
+    """
     try:
         with Image.open(path) as image:
             image = image.convert("L").resize(
@@ -59,6 +81,13 @@ def load_image(path, image_size):
 def csv_chunks(path, chunk_size):
     """Yield numeric rows in chunks; validate header, row widths and
     finiteness.
+
+    Args:
+        path: Input or output filesystem path used by this operation.
+        chunk_size: Positive maximum number of CSV rows held per block.
+
+    Returns:
+        Iterator of header names and bounded float32 row blocks.
     """
     try:
         with Path(path).open(encoding="utf-8-sig", newline="") as stream:
@@ -90,6 +119,16 @@ def csv_chunks(path, chunk_size):
 def prepare(directory, extensions, output, image_size=64, chunk_size=256):
     """Convert files to one memory-mapped NPY and return JSON-ready
     statistics.
+
+    Args:
+        directory: Root directory scanned recursively for input files.
+        extensions: Supported extensions; strings use comma-separated names.
+        output: Destination path for an array or directory for run results.
+        image_size: Positive side length for square grayscale images.
+        chunk_size: Positive maximum number of CSV rows held per block.
+
+    Returns:
+        Dictionary of counts, shape, sizes, timing and normalization.
     """
     started = time.perf_counter()
     if image_size <= 0 or chunk_size <= 0:

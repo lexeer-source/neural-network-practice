@@ -16,7 +16,19 @@ class DenseLayer:
     """A fully connected layer owned by a NeuralNetwork instance."""
 
     def __init__(self, inputs, outputs, activation, generator, he=False):
-        """Initialize sizes, Activation object, RNG and random parameters."""
+        """Initialize sizes, Activation object, RNG and random parameters.
+
+        Args:
+            inputs: Positive number of input features.
+            outputs: Positive number of output units.
+            activation: Activation object for a layer, or its name for a
+            network.
+            generator: NumPy random generator used to initialize weights.
+            he: Use He initialization when True; otherwise use 1 / inputs.
+
+        Returns:
+            None; initializes the new instance.
+        """
         scale = np.sqrt((2 if he else 1) / inputs)
         self.weights = generator.normal(0, scale, (inputs, outputs))
         self.biases = np.zeros((1, outputs))
@@ -29,6 +41,15 @@ class NeuralNetwork:
 
     def __init__(self, sizes, activation="sigmoid", seed=42):
         """Build at least input, hidden and output layers from positive sizes.
+
+        Args:
+            sizes: Positive layer sizes, including input, hidden and output.
+            activation: Activation object for a layer, or its name for a
+            network.
+            seed: Integer seed for reproducible data or transformation choices.
+
+        Returns:
+            None; initializes the new instance.
         """
         if (len(sizes) < 3 or any(
                 not isinstance(size, int) or isinstance(size, bool)
@@ -53,6 +74,12 @@ class NeuralNetwork:
     def change_activation(self, name):
         """Replace hidden activations; keep sigmoid output and current
         weights.
+
+        Args:
+            name: Activation name: sigmoid or relu.
+
+        Returns:
+            None; the hidden layer activations are updated.
         """
         make_activation(name)
         self.activation_name = name
@@ -87,7 +114,15 @@ class NeuralNetwork:
         return targets
 
     def forward(self, features, return_cache=False):
-        """Return predictions; optionally include activations for backprop."""
+        """Return predictions; optionally include activations for backprop.
+
+        Args:
+            features: Numeric feature matrix; columns must match the model.
+            return_cache: Include intermediate layer values when True.
+
+        Returns:
+            Activated array; NeuralNetwork optionally also returns cache.
+        """
         activated = [self._features(features)]
         preactivated = []
         for layer in self.layers:
@@ -99,7 +134,15 @@ class NeuralNetwork:
         return activated[-1]
 
     def loss_and_gradients(self, features, targets):
-        """Return mean squared error and analytic (weight, bias) gradients."""
+        """Return mean squared error and analytic (weight, bias) gradients.
+
+        Args:
+            features: Numeric feature matrix; columns must match the model.
+            targets: Target matrix matching the batch and output dimensions.
+
+        Returns:
+            Pair of scalar MSE and per-layer weight/bias gradients.
+        """
         predicted, (activated, preactivated) = self.forward(features, True)
         expected = self._targets(targets, len(predicted))
         difference = predicted - expected
@@ -119,6 +162,17 @@ class NeuralNetwork:
               batch_size=16, progress=None):
         """Train on shuffled mini-batches and append full-training MSE per
         epoch.
+
+        Args:
+            features: Numeric feature matrix; columns must match the model.
+            targets: Target matrix matching the batch and output dimensions.
+            learning_rate: Positive gradient descent step size.
+            epochs: Positive number of complete training passes.
+            batch_size: Positive maximum number of rows per mini-batch.
+            progress: Optional callback receiving the epoch and training MSE.
+
+        Returns:
+            Complete list of training MSE values recorded on this model.
         """
         features = self._features(features)
         targets = self._targets(targets, len(features))
@@ -148,6 +202,12 @@ class NeuralNetwork:
     def predict_raw(self, features):
         """Normalize raw inputs using stored training parameters, then
         predict.
+
+        Args:
+           features: Numeric feature matrix; columns must match the model.
+
+        Returns:
+            Network outputs after applying the stored training scaler.
         """
         features = self._features(features)
         if self.preprocessing is None:
@@ -157,7 +217,14 @@ class NeuralNetwork:
         return self.forward((features - center) / scale)
 
     def save(self, path):
-        """Save architecture, weights, scaler and history in a JSON file."""
+        """Save architecture, weights, scaler and history in a JSON file.
+
+        Args:
+            path: Input or output filesystem path used by this operation.
+
+        Returns:
+            None; the JSON model is written to the supplied path.
+        """
         payload = {
             "format_version": 1, "sizes": self.sizes,
             "activation": self.activation_name, "seed": self.seed,
@@ -178,6 +245,12 @@ class NeuralNetwork:
     def load(cls, path):
         """Validate and restore a JSON model without executing serialized
         code.
+
+        Args:
+            path: Input or output filesystem path used by this operation.
+
+        Returns:
+            Validated NeuralNetwork restored from the JSON file.
         """
         try:
             payload = json.loads(Path(path).read_text(encoding="utf-8"))

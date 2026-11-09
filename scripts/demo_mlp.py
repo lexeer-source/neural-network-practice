@@ -12,7 +12,17 @@ from part1_mlp.app.utils import save_loss_plot
 
 
 def run(csv_path, output, activation, epochs):
-    """Train once with fixed parameters; save metrics, model and loss chart."""
+    """Train once with fixed parameters; save metrics, model and loss chart.
+
+    Args:
+        csv_path: Headered CSV with two features and a final XOR target.
+        output: Destination path for an array or directory for run results.
+        activation: Activation object for a layer, or its name for a network.
+        epochs: Positive number of complete training passes.
+
+    Returns:
+        Metrics dictionary for the demo; console run returns None on exit.
+    """
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)
     manager = DatasetManager().load_csv(csv_path)
