@@ -21,7 +21,7 @@ def run(csv_path, output, activation, epochs):
         epochs: Positive number of complete training passes.
 
     Returns:
-        Metrics dictionary for the demo; console run returns None on exit.
+        Metrics dictionary for the completed training experiment.
     """
     output = Path(output)
     output.mkdir(parents=True, exist_ok=True)

@@ -110,7 +110,7 @@ def main():
     """Parse ENV/CLI configuration and return a useful nonzero error code.
 
     Args:
-        No explicit arguments; uses instance state or console input.
+        No explicit arguments.
 
     Returns:
         Integer exit code: zero for success, two for a reported failure.

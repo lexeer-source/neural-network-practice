@@ -33,7 +33,7 @@ class ConsoleApplication:
         """Initialize an empty application without reading files or training.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; initializes the new instance.
@@ -46,7 +46,7 @@ class ConsoleApplication:
         """Ask for layer sizes and activation, then initialize a fresh model.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -64,7 +64,7 @@ class ConsoleApplication:
         """Ask for CSV and test fraction; preserve an existing model's scaler.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -87,7 +87,7 @@ class ConsoleApplication:
         """Ask for optimizer parameters; train and display held-out accuracy.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -113,7 +113,7 @@ class ConsoleApplication:
         """Read raw feature vectors manually or from a headered feature CSV.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -142,7 +142,7 @@ class ConsoleApplication:
         """Save weights, scaler and training history at a user-supplied path.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -155,7 +155,7 @@ class ConsoleApplication:
         """Load and validate a user-supplied JSON model.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -168,7 +168,7 @@ class ConsoleApplication:
         """Save a loss chart without requiring a graphical desktop.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -182,7 +182,7 @@ class ConsoleApplication:
         """Switch hidden activation and warn that retraining may be needed.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; the hidden layer activations are updated.
@@ -196,10 +196,10 @@ class ConsoleApplication:
         gracefully.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
-            Metrics dictionary for the demo; console run returns None on exit.
+            None; returns when the user exits or interrupts the menu.
         """
         actions = {
             "1": self.create_network, "2": self.load_data,

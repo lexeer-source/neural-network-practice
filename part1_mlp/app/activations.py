@@ -19,7 +19,7 @@ class Activation(ABC):
             preserved.
 
         Returns:
-            Activated array; NeuralNetwork optionally also returns cache.
+            Activated array with the same shape as values.
         """
 
     @abstractmethod
@@ -46,7 +46,7 @@ class Sigmoid(Activation):
             preserved.
 
         Returns:
-            Activated array; NeuralNetwork optionally also returns cache.
+            Activated array with the same shape as values.
         """
         result = np.empty_like(values, dtype=float)
         positive = values >= 0
@@ -80,7 +80,7 @@ class ReLU(Activation):
             preserved.
 
         Returns:
-            Activated array; NeuralNetwork optionally also returns cache.
+            Activated array with the same shape as values.
         """
         return np.maximum(values, 0)
 

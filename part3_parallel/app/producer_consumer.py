@@ -108,7 +108,7 @@ def run_parallel(directory, extensions, output, size=64, variants=3,
         """Scan once and deliver ordered paths followed by stop signals.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.
@@ -133,7 +133,7 @@ def run_parallel(directory, extensions, output, size=64, variants=3,
         queues.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; updates or displays application state.

@@ -25,7 +25,7 @@ class Settings:
         """Return settings from NN_* variables, rejecting invalid numbers.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             Validated Settings instance built from NN_* variables.

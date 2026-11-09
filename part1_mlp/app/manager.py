@@ -46,7 +46,7 @@ class DatasetManager:
         """Create an unloaded manager; split() fits the training scaler.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             None; initializes the new instance.
@@ -128,7 +128,7 @@ class DatasetManager:
         """Return serializable training normalization parameters and names.
 
         Args:
-            No explicit arguments; uses instance state or console input.
+            No explicit arguments.
 
         Returns:
             Dictionary containing center, scale and feature names.

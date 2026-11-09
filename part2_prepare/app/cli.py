@@ -17,7 +17,7 @@ def doctor():
     """Return Python/dependency/CUDA/cwd diagnostics; GPU is optional.
 
     Args:
-        No explicit arguments; uses instance state or console input.
+        No explicit arguments.
 
     Returns:
         JSON-ready Python, dependency, CUDA and directory diagnostics.
@@ -50,7 +50,7 @@ def main():
     """Parse CLI overrides, run the command and return zero or a clear error.
 
     Args:
-        No explicit arguments; uses instance state or console input.
+        No explicit arguments.
 
     Returns:
         Integer exit code: zero for success, two for a reported failure.

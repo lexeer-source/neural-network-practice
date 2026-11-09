@@ -121,7 +121,7 @@ class NeuralNetwork:
             return_cache: Include intermediate layer values when True.
 
         Returns:
-            Activated array; NeuralNetwork optionally also returns cache.
+            Predictions, or predictions and cache when return_cache is True.
         """
         activated = [self._features(features)]
         preactivated = []
@@ -204,7 +204,7 @@ class NeuralNetwork:
         predict.
 
         Args:
-           features: Numeric feature matrix; columns must match the model.
+            features: Numeric feature matrix; columns must match the model.
 
         Returns:
             Network outputs after applying the stored training scaler.
